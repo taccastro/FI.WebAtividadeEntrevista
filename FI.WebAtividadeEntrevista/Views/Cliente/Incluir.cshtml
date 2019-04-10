@@ -7,7 +7,16 @@
     var urlPost = '@Url.Action("Incluir", "Cliente", new { area = "" })';
     </script>
     @Scripts.Render("~/bundles/clientes")
+
+
+    <script>
+        $(document).ready(function () {
+            $("#CPF").inputmask("mask", { "mask": "999.999.999-99" }, { reverse: true });
+        });
+    </script>
 }
 <h2>@Html.Raw(ViewBag.Title)</h2>
 @Html.Partial("Forms")
+
+
 

@@ -60,6 +60,7 @@ namespace WebAtividadeEntrevista.Controllers
             }
         }
 
+
         [HttpPost]
         public JsonResult Alterar(ClienteModel model)
         {
@@ -88,7 +89,7 @@ namespace WebAtividadeEntrevista.Controllers
                     Nome = model.Nome,
                     Sobrenome = model.Sobrenome,
                     Telefone = model.Telefone,
-                    CPF = model.CPF 
+                    CPF = model.CPF
                 });
 
                 return Json("Cadastro alterado com sucesso");
@@ -150,6 +151,7 @@ namespace WebAtividadeEntrevista.Controllers
             {
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
-        }
+        }               
+        
     }
 }

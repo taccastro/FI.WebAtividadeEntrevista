@@ -1,6 +1,5 @@
-﻿
-<form id="formCadastro" method="post">
-      <div class="row">
+﻿<form id="formCadastro" method="post">
+    <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 <label for="Nome">Nome:</label>
@@ -19,6 +18,7 @@
             <div class="form-group">
                 <label for="CPF:">CPF:</label>
                 <input required="required" type="text" class="form-control" id="CPF" name="CPF" placeholder="Ex: 999.999.999-99" maxlength="14">
+                @*<p>CPF: <input type="text" id="cpf" /></p>*@
             </div>
         </div>
         <div class="col-md-6">
@@ -85,9 +85,13 @@
                 @Html.ActionLink("Voltar", "Index", "Cliente", new { }, new { @class = "btn btn-sm btn-danger" })
             </div>
         </div>
-    </div>
-
-
+    </div>    
 </form>
+
+
+
+
+
+
 
 

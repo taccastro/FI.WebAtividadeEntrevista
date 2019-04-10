@@ -71,7 +71,10 @@ namespace WebAtividadeEntrevista.Models
         /// <summary>
         /// CPF
         /// </summary>
+        [Required(ErrorMessage="CPF obrigatório")]
         public string CPF { get; set; }
+
+
 
     }    
 }
