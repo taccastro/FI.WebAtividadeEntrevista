@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FI.AtividadeEntrevista.BLL
 {
@@ -14,8 +10,9 @@ namespace FI.AtividadeEntrevista.BLL
         /// <param name="cliente">Objeto de cliente</param>
         public long Incluir(DML.Cliente cliente)
         {
-            DAL.DaoCliente cli = new DAL.DaoCliente();
+            DAL.DaoCliente cli = new DAL.DaoCliente();         
             return cli.Incluir(cliente);
+            
         }
 
         /// <summary>
@@ -24,8 +21,8 @@ namespace FI.AtividadeEntrevista.BLL
         /// <param name="cliente">Objeto de cliente</param>
         public void Alterar(DML.Cliente cliente)
         {
-            DAL.DaoCliente cli = new DAL.DaoCliente();
-            cli.Alterar(cliente);
+                DAL.DaoCliente cli = new DAL.DaoCliente();
+                cli.Alterar(cliente);
         }
 
         /// <summary>

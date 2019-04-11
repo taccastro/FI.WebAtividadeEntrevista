@@ -24,7 +24,6 @@ C:\Users\Tiago\Desktop\FuncaoSantander\FI.WebAtividadeEntrevista\FI.WebAtividade
 C:\Users\Tiago\Desktop\FuncaoSantander\FI.WebAtividadeEntrevista\FI.WebAtividadeEntrevista\FI.AtividadeEntrevista\obj\Debug\FI.AtividadeEntrevista.pdb
 C:\Users\Tiago\Desktop\FI.WebAtividadeEntrevista\FI.WebAtividadeEntrevista\FI.AtividadeEntrevista\bin\Debug\FI.AtividadeEntrevista.dll
 C:\Users\Tiago\Desktop\FI.WebAtividadeEntrevista\FI.WebAtividadeEntrevista\FI.AtividadeEntrevista\bin\Debug\FI.AtividadeEntrevista.pdb
-C:\Users\Tiago\Desktop\FI.WebAtividadeEntrevista\FI.WebAtividadeEntrevista\FI.AtividadeEntrevista\obj\Debug\FI.AtividadeEntrevista.csprojResolveAssemblyReference.cache
 C:\Users\Tiago\Desktop\FI.WebAtividadeEntrevista\FI.WebAtividadeEntrevista\FI.AtividadeEntrevista\obj\Debug\FI.AtividadeEntrevista.csproj.CoreCompileInputs.cache
 C:\Users\Tiago\Desktop\FI.WebAtividadeEntrevista\FI.WebAtividadeEntrevista\FI.AtividadeEntrevista\obj\Debug\FI.AtividadeEntrevista.dll
 C:\Users\Tiago\Desktop\FI.WebAtividadeEntrevista\FI.WebAtividadeEntrevista\FI.AtividadeEntrevista\obj\Debug\FI.AtividadeEntrevista.pdb
