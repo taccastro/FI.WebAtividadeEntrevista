@@ -36,15 +36,21 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-
-                model.Id = bo.Incluir(new Beneficiario()
+                try
                 {
-                    Nome = model.Nome,
-                    CPF = model.CPF,
-                    IDCLIENTE = model.ClienteId
-                });
+                    model.Id = bo.Incluir(new Beneficiario()
+                    {
+                        Nome = model.Nome,
+                        CPF = model.CPF,
+                        IDCLIENTE = model.ClienteId
+                    });
 
-                return Json("Cadastro efetuado com sucesso");
+                    return Json("Cadastro efetuado com sucesso");
+                }
+                catch (Exception ex)
+                {
+                    return Json("Ocorreu um erro: " + ex.Message);
+                }
             }
         }
 
@@ -94,7 +100,7 @@ namespace WebAtividadeEntrevista.Controllers
                 };
             }
 
-            ViewBag.IdCliente = model.ClienteId;
+            ViewBag.ClienteId = model?.ClienteId;  // Alterado para usar ViewBag.ClienteId
             return View(model);
         }
 

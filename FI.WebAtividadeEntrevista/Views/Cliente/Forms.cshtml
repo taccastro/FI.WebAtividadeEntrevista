@@ -1,6 +1,7 @@
 ﻿
 <form id="formCadastro" method="post">
-    <input type="hidden" id="ClienteId" name="ClienteId" value="@ViewBag.ClienteId">
+    @*<input type="hidden" id="ClienteId" name="ClienteId" value="@ViewBag.ClienteId">*@
+    <input type="hidden" id="IdCliente" name="ClienteId" value="@ViewBag.IdCliente">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -92,9 +93,9 @@
                 @Html.ActionLink("Voltar", "Index", "Cliente", new { }, new { @class = "btn btn-sm btn-danger" })
             </div>
         </div>
-        </div>
+    </div>
 
-    </form>
+</form>
 
     @*//MODAL*@
     <div class="modal fade" id="modalBeneficiario" tabindex="-1" role="dialog" aria-labelledby="modalBeneficiarioLabel" aria-hidden="true">

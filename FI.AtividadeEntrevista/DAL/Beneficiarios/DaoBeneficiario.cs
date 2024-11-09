@@ -12,9 +12,9 @@ namespace WebAtividadeEntrevista.DAO
         internal long Incluir(Beneficiario beneficiario)
         {
             List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("Nome", beneficiario.Nome));
-            list.Add(new SqlParameter("CPF", beneficiario.CPF));
-            list.Add(new SqlParameter("IdCliente", beneficiario.IDCLIENTE));
+            list.Add(new SqlParameter("@Nome", beneficiario.Nome));
+            list.Add(new SqlParameter("@CPF", beneficiario.CPF));
+            list.Add(new SqlParameter("@IDCLIENTE", beneficiario.IDCLIENTE));
             DataSet dataSet = Consultar("FI_SP_IncBeneficiarioV2", list);
             long result = 0L;
             if (dataSet.Tables[0].Rows.Count > 0)
@@ -28,7 +28,7 @@ namespace WebAtividadeEntrevista.DAO
         internal Beneficiario Consultar(long Id)
         {
             List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("Id", Id));
+            list.Add(new SqlParameter("@Id", Id));
             DataSet ds = Consultar("FI_SP_ConsBeneficiario", list);
             List<Beneficiario> source = Converter(ds);
             return source.FirstOrDefault();
@@ -37,7 +37,7 @@ namespace WebAtividadeEntrevista.DAO
         internal bool VerificarExistencia(string CPF)
         {
             List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("CPF", CPF));
+            list.Add(new SqlParameter("@CPF", CPF));
             DataSet dataSet = Consultar("FI_SP_VerificaBeneficiario", list);
             return dataSet.Tables[0].Rows.Count > 0;
         }
@@ -45,10 +45,10 @@ namespace WebAtividadeEntrevista.DAO
         internal List<Beneficiario> Pesquisa(int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
         {
             List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("iniciarEm", iniciarEm));
-            list.Add(new SqlParameter("quantidade", quantidade));
-            list.Add(new SqlParameter("campoOrdenacao", campoOrdenacao));
-            list.Add(new SqlParameter("crescente", crescente));
+            list.Add(new SqlParameter("@iniciarEm", iniciarEm));
+            list.Add(new SqlParameter("@quantidade", quantidade));
+            list.Add(new SqlParameter("@campoOrdenacao", campoOrdenacao));
+            list.Add(new SqlParameter("@crescente", crescente));
             DataSet dataSet = Consultar("FI_SP_PesqBeneficiario", list);
             List<Beneficiario> result = Converter(dataSet);
             int result2 = 0;
@@ -64,7 +64,7 @@ namespace WebAtividadeEntrevista.DAO
         internal List<Beneficiario> Listar()
         {
             List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("Id", SqlDbType.BigInt));
+            list.Add(new SqlParameter("@Id", SqlDbType.BigInt));
             DataSet ds = Consultar("FI_SP_ConsBeneficiario", list);
             return Converter(ds);
         }
@@ -72,17 +72,17 @@ namespace WebAtividadeEntrevista.DAO
         internal void Alterar(Beneficiario beneficiario)
         {
             List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("Nome", beneficiario.Nome));
-            list.Add(new SqlParameter("CPF", beneficiario.CPF));
-            list.Add(new SqlParameter("IdCliente", beneficiario.IDCLIENTE));
-            list.Add(new SqlParameter("ID", beneficiario.Id));
+            list.Add(new SqlParameter("@Nome", beneficiario.Nome));
+            list.Add(new SqlParameter("@CPF", beneficiario.CPF));
+            list.Add(new SqlParameter("@IdCliente", beneficiario.IDCLIENTE));
+            list.Add(new SqlParameter("@ID", beneficiario.Id));
             Executar("FI_SP_AltBeneficiario", list);
         }
 
         internal void Excluir(long Id)
         {
             List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("Id", Id));
+            list.Add(new SqlParameter("@Id", Id));
             Executar("FI_SP_DelBeneficiario", list);
         }
 

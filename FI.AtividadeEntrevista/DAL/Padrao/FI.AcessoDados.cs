@@ -45,38 +45,7 @@ namespace FI.AtividadeEntrevista.DAL
                 conexao.Close();
             }
         }
-
-        //    internal DataSet Consultar(string NomeProcedure, List<SqlParameter> parametros)
-        //    {
-        //        SqlCommand comando = new SqlCommand();
-        //        SqlConnection conexao = new SqlConnection(stringDeConexao);
-
-        //        comando.Connection = conexao;
-        //        comando.CommandType = System.Data.CommandType.StoredProcedure;
-        //        comando.CommandText = NomeProcedure;
-        //        foreach (var item in parametros)
-        //            comando.Parameters.Add(item);
-
-        //        SqlDataAdapter adapter = new SqlDataAdapter(comando);
-        //        DataSet ds = new DataSet();
-        //        conexao.Open();
-
-        //        try
-        //        {
-        //            adapter.Fill(ds);
-        //        }
-        //        catch (Exception ex)
-        //        {
-
-        //            throw ex;
-        //        }
-        //        finally
-        //        {
-        //            conexao.Close();
-        //        }
-
-        //        return ds;
-        //    }
+              
 
         internal DataSet Consultar(string NomeProcedure, List<SqlParameter> parametros)
         {
