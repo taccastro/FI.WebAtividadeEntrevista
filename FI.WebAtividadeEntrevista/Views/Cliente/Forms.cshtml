@@ -1,4 +1,6 @@
-﻿<form id="formCadastro" method="post">
+﻿
+<form id="formCadastro" method="post">
+    <input type="hidden" id="ClienteId" name="ClienteId" value="@ViewBag.ClienteId">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -16,8 +18,8 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="CPF:">CPF:</label>
-                <input required="required" type="text" class="form-control" id="CPF" name="CPF" placeholder="Ex: 999.999.999-99" maxlength="14" onblur="TestaCPF(this)">
+                <label for="CPF">CPF:</label>
+                <input required="required" type="text" class="form-control" id="CPF" name="CPF" placeholder="Ex.: 000.011.010-00" maxlength="255">
             </div>
         </div>
         <div class="col-md-6">
@@ -26,6 +28,7 @@
                 <input required="required" type="text" class="form-control" id="Nacionalidade" name="Nacionalidade" placeholder="Ex.: brasileira" maxlength="50">
             </div>
         </div>
+
     </div>
     <div class="row">
         <div class="col-md-4">
@@ -51,6 +54,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -59,6 +63,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -73,97 +78,63 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-12">
-            <div class="pull-left">
-                <div class="widget blue-bg p-lg text-center">
-                    <div class="m-b-md" data-toggle="modal" data-target="#modalMaster">
-                        <i class="fa fa-money fa-4x"></i>
-                        <button type="button" id="beneficiario" class="btn btn-sm btn-default">Beneficiarios</button>
-                    </div>
+            @if (ViewBag.IdCliente > 0)
+            {
+                <div class="pull-left">
+                    <button type="button" class="btn btn-secondary" id="openModalBtn">Beneficiário</button>
                 </div>
-            </div>
+            }
             <div class="pull-right">
                 <button type="submit" class="btn btn-sm btn-success">Salvar</button>
                 @Html.ActionLink("Voltar", "Index", "Cliente", new { }, new { @class = "btn btn-sm btn-danger" })
             </div>
         </div>
-    </div>
-</form>
+        </div>
 
-@*Modal*@
+    </form>
 
-<div class="modal inmodal" id="modalMaster" tabindex="-1" role="dialog" aria-hidden="true">
-    <div id="modalAberturaMaster" class="modal-dialog">
-        <div class="modal-content animated fadeIn">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
-                <i class="fa fa-clock-o modal-icon"></i>
-                <h4 class="modal-title">Beneficiários</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label for="CPF:">CPF:</label>
-                            <input required="required" type="text" class="form-control" id="CPF" name="CPF" placeholder="Ex: 999.999.999-99" maxlength="14" onblur="TestaCPF(this)">
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label for="Nome">Nome:</label>
-                            <input required="required" type="text" class="form-control" id="Nome" name="Nome" placeholder="Ex.: João" maxlength="50">
-                        </div>
-                    </div>
-                    @*<div class="col-md-3">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-sm btn-success">Incluir</button>
-                            </div>
-                        </div>*@
+    @*//MODAL*@
+    <div class="modal fade" id="modalBeneficiario" tabindex="-1" role="dialog" aria-labelledby="modalBeneficiarioLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalBeneficiarioLabel">Beneficiários</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <table id="BeneficiarioList" cellspacing="0" class="table table-striped" style="width: 100%">
+                <div class="modal-body">
+                    <form id="formBeneficiario" class="form-inline">
+                        <input type="hidden" id="ClienteIdModal" name="ClienteIdModal">
+                        <div class="form-group mr-8">
+                            <label for="CPF">CPF:</label>
+                            <input type="text" class="form-control input-sm" id="CPFBeneficiario" name="CPFBeneficiario" maxlength="14" placeholder="Ex.: 000.101.010-10">
+                        </div>
+                        <div class="form-group ml-8">
+                            <label for="Nome">Nome:</label>
+                            <input type="text" class="form-control input-sm" id="NomeBeneficiario" name="NomeBeneficiario" maxlength="50" placeholder="Ex.: João">
+                        </div>
+                        @Html.ActionLink("Incluir", "Incluir", "Beneficiario", null, new { @class = "btn btn-success", id = "incluirLink", style = "margin-top: 24px;" })
+                    </form>
+                </div>
+                <hr>
+                <table class="table ml-3">
                     <thead>
                         <tr>
-                            <th>Nome</th>
                             <th>CPF</th>
+                            <th>Nome</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>
-                                <button type="submit" class="btn btn-sm btn-success">Alterar</button>
-                            </td>
-                            <td> <button type="submit" class="btn btn-sm btn-success">Excluir</button></td>
-                        </tr>
+                    <tbody id="tabelaCorpo">
                     </tbody>
                 </table>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
-@section scripts{
-    <script>
-        $(document).ready(function () {
-            $("#modalAberturaMaster").show();
-        });
-    </script>
-}
-
-
-
-
-
-
-
-
-
-
-
-

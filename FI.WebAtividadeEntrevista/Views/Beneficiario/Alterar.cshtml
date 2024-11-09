@@ -1,0 +1,64 @@
+﻿@model WebAtividadeEntrevista.Models.BeneficiarioModel
+@{
+    ViewBag.Title = "Alterar Beneficiário";
+}
+
+<h2>@Html.Raw(ViewBag.Title)</h2>
+<br />
+
+<form id="formCadastro" method="post" action="@Url.Action("Alterar", "Beneficiario")">
+    <input type="hidden" id="ClienteId" name="ClienteId" value="@ViewBag.ClienteId">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="CPFBene">CPF:</label>
+                <input type="text" class="form-control" id="CPF" name="CPF" placeholder="Ex.: 000.011.010-00" maxlength="14">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Nome">Nome:</label>
+                <input type="text" class="form-control" id="Nome" name="Nome" placeholder="Ex.: João" maxlength="50">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-sm btn-success">Salvar</button>
+                @Html.ActionLink("Voltar", "Index", "Cliente", new { }, new { @class = "btn btn-sm btn-danger" })
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var CPF = '@Model.CPF';
+            var nome = '@Model.Nome';
+
+            $('#CPF').val(CPF);
+            $('#Nome').val(nome);
+
+            $('#formCadastro').on('submit', function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var url = form.attr('action');
+                var formData = form.serialize();
+
+                $.post(url, formData)
+                    .done(function (data) {
+                        alert(data);
+                        window.location.href = '@Url.Action("Index", "Cliente", new { area = "" })';
+                    })
+                    .fail(function (xhr) {
+                        alert(xhr.responseText);
+                    });
+            });
+        });
+    </script>
+}
+
+@*@Html.Partial("Forms")*@

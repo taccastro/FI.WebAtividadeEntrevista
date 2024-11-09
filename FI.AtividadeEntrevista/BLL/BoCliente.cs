@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace FI.AtividadeEntrevista.BLL
 {
@@ -10,9 +11,10 @@ namespace FI.AtividadeEntrevista.BLL
         /// <param name="cliente">Objeto de cliente</param>
         public long Incluir(DML.Cliente cliente)
         {
-            DAL.DaoCliente cli = new DAL.DaoCliente();         
+            cliente.CPF = MascaraCPF(cliente.CPF);
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            cli.VerificarExistencia(cliente.CPF);
             return cli.Incluir(cliente);
-            
         }
 
         /// <summary>
@@ -21,8 +23,8 @@ namespace FI.AtividadeEntrevista.BLL
         /// <param name="cliente">Objeto de cliente</param>
         public void Alterar(DML.Cliente cliente)
         {
-                DAL.DaoCliente cli = new DAL.DaoCliente();
-                cli.Alterar(cliente);
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            cli.Alterar(cliente);
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace FI.AtividadeEntrevista.BLL
         public List<DML.Cliente> Pesquisa(int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
-            return cli.Pesquisa(iniciarEm,  quantidade, campoOrdenacao, crescente, out qtd);
+            return cli.Pesquisa(iniciarEm, quantidade, campoOrdenacao, crescente, out qtd);
         }
 
         /// <summary>
@@ -74,6 +76,13 @@ namespace FI.AtividadeEntrevista.BLL
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
             return cli.VerificarExistencia(CPF);
+        }
+
+        public string MascaraCPF(string cpf)
+        {
+            cpf = Regex.Replace(cpf, @"\D", "");
+            cpf = Regex.Replace(cpf, @"(\d{3})(\d{3})(\d{3})(\d{2})", "$1.$2.$3-$4");
+            return cpf;
         }
     }
 }

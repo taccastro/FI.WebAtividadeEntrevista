@@ -9,7 +9,7 @@
         /// Id
         /// </summary>
         public long Id { get; set; }
-        
+
         /// <summary>
         /// CEP
         /// </summary>
@@ -61,5 +61,5 @@
         /// </summary>
         public string CPF { get; set; }
 
-    }    
+    }
 }

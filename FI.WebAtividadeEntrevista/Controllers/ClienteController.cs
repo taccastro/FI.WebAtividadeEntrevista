@@ -1,20 +1,20 @@
 ﻿using FI.AtividadeEntrevista.BLL;
-using WebAtividadeEntrevista.Models;
+using FI.AtividadeEntrevista.DML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using FI.AtividadeEntrevista.DML;
+using WebAtividadeEntrevista.Models;
 
 namespace WebAtividadeEntrevista.Controllers
 {
     public class ClienteController : Controller
     {
-        private static ClienteModel cli;
         public ActionResult Index()
         {
             return View();
         }
+
 
         public ActionResult Incluir()
         {
@@ -38,74 +38,57 @@ namespace WebAtividadeEntrevista.Controllers
             else
             {
 
-                if (bo.VerificarExistencia(model.CPF))
+                model.Id = bo.Incluir(new Cliente()
                 {
+                    CEP = model.CEP,
+                    CPF = model.CPF,
+                    Cidade = model.Cidade,
+                    Email = model.Email,
+                    Estado = model.Estado,
+                    Logradouro = model.Logradouro,
+                    Nacionalidade = model.Nacionalidade,
+                    Nome = model.Nome,
+                    Sobrenome = model.Sobrenome,
+                    Telefone = model.Telefone
+                });
 
-                    return Json(" Já existe na base uma ou mais pessoas com este CPF Cadastrado");
-                }
-                else
-                {
 
-                    model.Id = bo.Incluir(new Cliente()
-                    {
-                        CEP = model.CEP,
-                        Cidade = model.Cidade,
-                        Email = model.Email,
-                        Estado = model.Estado,
-                        Logradouro = model.Logradouro,
-                        Nacionalidade = model.Nacionalidade,
-                        Nome = model.Nome,
-                        Sobrenome = model.Sobrenome,
-                        Telefone = model.Telefone,
-                        CPF = model.CPF
-                    });
-                    return Json("Cadastro efetuado com sucesso");
-                }
+                return Json("Cadastro efetuado com sucesso");
             }
         }
-        
-        [HttpPost]
+
+        [HttpPut]
         public JsonResult Alterar(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
 
-            //Tratamento caso o usuário só altere o nome iria dar erro cpf existente
-            //caso não fosse feito essa verificação
-            if (bo.VerificarExistencia(model.CPF) && cli.CPF != model.CPF)
+            if (!this.ModelState.IsValid)
             {
+                List<string> erros = (from item in ModelState.Values
+                                      from error in item.Errors
+                                      select error.ErrorMessage).ToList();
+
                 Response.StatusCode = 400;
-                return Json($" Já existe na base uma ou mais pessoas com este CPF Cadastrado");
+                return Json(string.Join(Environment.NewLine, erros));
             }
             else
             {
-                if (!this.ModelState.IsValid)
+                bo.Alterar(new Cliente()
                 {
-                    List<string> erros = (from item in ModelState.Values
-                                          from error in item.Errors
-                                          select error.ErrorMessage).ToList();
+                    Id = model.Id,
+                    CEP = model.CEP,
+                    CPF = model.CPF,
+                    Cidade = model.Cidade,
+                    Email = model.Email,
+                    Estado = model.Estado,
+                    Logradouro = model.Logradouro,
+                    Nacionalidade = model.Nacionalidade,
+                    Nome = model.Nome,
+                    Sobrenome = model.Sobrenome,
+                    Telefone = model.Telefone
+                });
 
-                    Response.StatusCode = 400;
-                    return Json(string.Join(Environment.NewLine, erros));
-                }
-                else
-                {
-                    bo.Alterar(new Cliente()
-                    {
-                        Id = model.Id,
-                        CEP = model.CEP,
-                        Cidade = model.Cidade,
-                        Email = model.Email,
-                        Estado = model.Estado,
-                        Logradouro = model.Logradouro,
-                        Nacionalidade = model.Nacionalidade,
-                        Nome = model.Nome,
-                        Sobrenome = model.Sobrenome,
-                        Telefone = model.Telefone,
-                        CPF = model.CPF
-                    });
-
-                    return Json("Cadastro alterado com sucesso");
-                }                
+                return Json("Cadastro alterado com sucesso");
             }
         }
 
@@ -122,6 +105,7 @@ namespace WebAtividadeEntrevista.Controllers
                 {
                     Id = cliente.Id,
                     CEP = cliente.CEP,
+                    CPF = cliente.CPF,
                     Cidade = cliente.Cidade,
                     Email = cliente.Email,
                     Estado = cliente.Estado,
@@ -129,11 +113,13 @@ namespace WebAtividadeEntrevista.Controllers
                     Nacionalidade = cliente.Nacionalidade,
                     Nome = cliente.Nome,
                     Sobrenome = cliente.Sobrenome,
-                    Telefone = cliente.Telefone,
-                    CPF = cliente.CPF
+                    Telefone = cliente.Telefone
                 };
+
+                ViewBag.IdCliente = cliente.Id;
+
             }
-            cli = model;
+
             return View(model);
         }
 
@@ -163,6 +149,5 @@ namespace WebAtividadeEntrevista.Controllers
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
         }
-
     }
 }

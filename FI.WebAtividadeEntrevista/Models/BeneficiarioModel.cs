@@ -5,13 +5,21 @@ namespace WebAtividadeEntrevista.Models
     public class BeneficiarioModel
     {
         public long Id { get; set; }
+        /// <summary>
+        /// Nome do Beneficiário    
+        /// </summary>
+        [Required]
+        public string Nome { get; set; }
 
-        public long IdCliente { get; set; }
-
-        [Required(ErrorMessage = "CPF obrigatório")]
+        /// <summary>
+        /// CPF do Beneficiário
+        /// </summary>
+        [Required]
         public string CPF { get; set; }
-        
-        public string NOME { get; set; }
 
+        /// <summary>
+        /// Id do Cliente   
+        /// </summary>
+        public long? ClienteId { get; set; }
     }
 }
