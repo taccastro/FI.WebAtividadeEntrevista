@@ -25,34 +25,39 @@ namespace WebAtividadeEntrevista.Controllers
         {
             BoBeneficiario bo = new BoBeneficiario();
 
-            if (!this.ModelState.IsValid)
+            // Verificação de CPF inválido
+            if (!bo.ValidarCPF(model.CPF))
             {
-                List<string> erros = (from item in ModelState.Values
-                                      from error in item.Errors
-                                      select error.ErrorMessage).ToList();
-
                 Response.StatusCode = 400;
-                return Json(string.Join(Environment.NewLine, erros));
+                return Json("CPF inválido.");
             }
-            else
-            {
-                try
-                {
-                    model.Id = bo.Incluir(new Beneficiario()
-                    {
-                        Nome = model.Nome,
-                        CPF = model.CPF,
-                        IDCLIENTE = model.ClienteId
-                    });
 
-                    return Json("Cadastro efetuado com sucesso");
-                }
-                catch (Exception ex)
+            // Verifica se o CPF já está cadastrado para o mesmo cliente
+            if (bo.VerificarExistencia(model.CPF))
+            {
+                Response.StatusCode = 400;
+                return Json("Já existe um beneficiário com esse CPF para o mesmo cliente.");
+            }
+
+            // Caso tudo esteja correto, inclui o beneficiário
+            try
+            {
+                model.Id = bo.Incluir(new Beneficiario()
                 {
-                    return Json("Ocorreu um erro: " + ex.Message);
-                }
+                    Nome = model.Nome,
+                    CPF = model.CPF,
+                    IDCLIENTE = model.ClienteId
+                });
+
+                return Json(new { success = true, message = "Beneficiário incluído com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { success = false, message = "Erro ao incluir beneficiário: " + ex.Message });
             }
         }
+
 
         [HttpPost]
         public JsonResult Alterar(BeneficiarioModel model)

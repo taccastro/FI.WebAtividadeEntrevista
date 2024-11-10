@@ -104,5 +104,6 @@ namespace WebAtividadeEntrevista.DAO
 
             return list;
         }
+
     }
 }

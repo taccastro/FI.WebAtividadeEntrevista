@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\FI.AtividadeEntrevista",
+    "\\FI.AtividadeEntrevista\\BLL",
     "\\FI.WebAtividadeEntrevista",
     "\\FI.WebAtividadeEntrevista\\Controllers"
   ],
-  "SelectedNode": "\\FI.WebAtividadeEntrevista\\Controllers\\ClienteController.cs",
+  "SelectedNode": "\\.gitattributes",
   "PreviewInSolutionExplorer": false
 }

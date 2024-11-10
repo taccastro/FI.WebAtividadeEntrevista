@@ -1,3 +1,0 @@
-git add packages/.keep  # ou o arquivo de sua escolha
-git commit -m "Update packages folder to refresh GitHub history"
-git push

@@ -73,13 +73,17 @@ $(document).ready(function () {
                     CPF: cpfBeneficiario
                 },
                 success: function (response) {
-                    $('#modalBeneficiario').modal('hide');
-                    ModalDialog("Beneficiário incluído com sucesso.", "SUCESSO!")
-
-                    preencherTabela(response.beneficiarios);
+                    if (response.success) {
+                        $('#modalBeneficiario').modal('hide');
+                        ModalDialog(response.message, "SUCESSO!");
+                        preencherTabela(response.beneficiarios);
+                    } else {
+                        // Exibe mensagem de erro
+                        alert(response.message);
+                    }
                 },
                 error: function (xhr, status, error) {
-                    alert('Ocorreu um erro ao incluir o beneficiário.');
+                    alert('Ocorreu um erro ao incluir o beneficiário. Tente novamente.');
                 }
             });
         });
