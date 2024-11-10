@@ -13,6 +13,12 @@ namespace FI.AtividadeEntrevista.BLL
         public long Incluir(DML.Cliente cliente)
         {
             cliente.CPF = MascaraCPF(cliente.CPF);
+            
+            if (!CPFValido(cliente.CPF))
+            {
+                throw new Exception("O CPF fornecido é inválido.");
+            }
+
             DAL.DaoCliente cli = new DAL.DaoCliente();
 
             // Verifica se o CPF já existe
@@ -85,6 +91,45 @@ namespace FI.AtividadeEntrevista.BLL
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
             return cli.VerificarExistencia(CPF);
+        }
+
+         /// <summary>
+        /// Verifica se o CPF é válido
+        /// </summary>
+        /// <param name="cpf">CPF a ser validado</param>
+        /// <returns>Retorna true se o CPF for válido; caso contrário, false</returns>
+        public bool CPFValido(string cpf)
+        {
+            cpf = Regex.Replace(cpf, @"\D", ""); // Remove caracteres não numéricos
+
+            if (cpf.Length != 11 || Regex.IsMatch(cpf, @"(\d)\1{10}"))
+            {
+                return false; // CPF precisa ter 11 dígitos e não pode ser uma sequência repetida
+            }
+
+            int[] multiplicadores1 = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicadores2 = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            // Calcula o primeiro dígito verificador
+            int soma = 0;
+            for (int i = 0; i < 9; i++)
+            {
+                soma += int.Parse(cpf[i].ToString()) * multiplicadores1[i];
+            }
+            int resto = soma % 11;
+            int primeiroDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+
+            // Calcula o segundo dígito verificador
+            soma = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                soma += int.Parse(cpf[i].ToString()) * multiplicadores2[i];
+            }
+            resto = soma % 11;
+            int segundoDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+
+            // Verifica se os dígitos verificadores calculados conferem com os dígitos do CPF
+            return cpf.EndsWith($"{primeiroDigitoVerificador}{segundoDigitoVerificador}");
         }
 
         public string MascaraCPF(string cpf)
