@@ -2,6 +2,7 @@
 $(document).ready(function () {
 
     if (obj) {
+        $('#formCadastro #IdCliente').val(obj.Id);
         $('#formCadastro #Nome').val(obj.Nome);
         $('#formCadastro #CEP').val(obj.CEP);
         $('#formCadastro #CPF').val(obj.CPF);
@@ -19,11 +20,13 @@ $(document).ready(function () {
 
         $.ajax({
             url: '/Cliente/Alterar',
-            method: "PUT",  
-            data: {
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "Id": $(this).find("#IdCliente").val(),
                 "Nome": $(this).find("#Nome").val(),
                 "CEP": $(this).find("#CEP").val(),
-                "CPF": $(this).find("#CPF").val(),  
+                "CPF": $(this).find("#CPF").val(),
                 "Email": $(this).find("#Email").val(),
                 "Sobrenome": $(this).find("#Sobrenome").val(),
                 "Nacionalidade": $(this).find("#Nacionalidade").val(),
@@ -31,7 +34,7 @@ $(document).ready(function () {
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val()
-            },
+            }),
             error: function (r) {
                 if (r.status === 400)
                     ModalDialog("Ocorreu um erro", r.responseJSON);
@@ -42,7 +45,7 @@ $(document).ready(function () {
                 ModalDialog("SUCESSO!", "Cliente foi atualizado!");
                 setTimeout(function () {
                     window.location.href = '/Cliente';
-                }, 1000);
+                }, 5000);
             }
         });
     });
