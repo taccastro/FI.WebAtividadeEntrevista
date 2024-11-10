@@ -15,7 +15,7 @@ namespace WebAtividadeEntrevista.DAO
             list.Add(new SqlParameter("@Nome", beneficiario.Nome));
             list.Add(new SqlParameter("@CPF", beneficiario.CPF));
             list.Add(new SqlParameter("@IDCLIENTE", beneficiario.IDCLIENTE));
-            DataSet dataSet = Consultar("FI_SP_IncBeneficiarioV2", list);
+            DataSet dataSet = Consultar("FI_SP_IncBeneficiario", list);
             long result = 0L;
             if (dataSet.Tables[0].Rows.Count > 0)
             {
