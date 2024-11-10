@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\FI.WebAtividadeEntrevista",
+    "\\FI.WebAtividadeEntrevista\\Controllers"
   ],
-  "SelectedNode": "\\FI.WebAtividadeEntrevista.sln",
+  "SelectedNode": "\\FI.WebAtividadeEntrevista\\Controllers\\ClienteController.cs",
   "PreviewInSolutionExplorer": false
 }

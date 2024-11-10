@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace FI.AtividadeEntrevista.BLL
@@ -13,8 +14,16 @@ namespace FI.AtividadeEntrevista.BLL
         {
             cliente.CPF = MascaraCPF(cliente.CPF);
             DAL.DaoCliente cli = new DAL.DaoCliente();
-            cli.VerificarExistencia(cliente.CPF);
-            return cli.Incluir(cliente);
+
+            // Verifica se o CPF já existe
+            if (cli.VerificarExistencia(cliente.CPF))
+            {
+                throw new Exception("Já existe um cliente com esse CPF.");
+            }
+            else
+            {
+                return cli.Incluir(cliente);
+            }            
         }
 
         /// <summary>

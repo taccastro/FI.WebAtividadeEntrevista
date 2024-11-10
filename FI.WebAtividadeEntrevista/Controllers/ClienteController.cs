@@ -35,25 +35,32 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-
-                model.Id = bo.Incluir(new Cliente()
+                try
                 {
-                    CEP = model.CEP,
-                    CPF = model.CPF,
-                    Cidade = model.Cidade,
-                    Email = model.Email,
-                    Estado = model.Estado,
-                    Logradouro = model.Logradouro,
-                    Nacionalidade = model.Nacionalidade,
-                    Nome = model.Nome,
-                    Sobrenome = model.Sobrenome,
-                    Telefone = model.Telefone
-                });
+                    model.Id = bo.Incluir(new Cliente()
+                    {
+                        CEP = model.CEP,
+                        CPF = model.CPF,
+                        Cidade = model.Cidade,
+                        Email = model.Email,
+                        Estado = model.Estado,
+                        Logradouro = model.Logradouro,
+                        Nacionalidade = model.Nacionalidade,
+                        Nome = model.Nome,
+                        Sobrenome = model.Sobrenome,
+                        Telefone = model.Telefone
+                    });
 
-
-                return Json("Cadastro efetuado com sucesso");
+                    return Json("Cadastro efetuado com sucesso");
+                }
+                catch (Exception ex)
+                {
+                    Response.StatusCode = 400;
+                    return Json(ex.Message); // Retorna a mensagem de erro para o modal
+                }
             }
         }
+
 
         [HttpPut]
         public JsonResult Alterar(ClienteModel model)
