@@ -13,7 +13,7 @@ namespace FI.AtividadeEntrevista.BLL
         public long Incluir(DML.Cliente cliente)
         {
             cliente.CPF = MascaraCPF(cliente.CPF);
-            
+
             if (!CPFValido(cliente.CPF))
             {
                 throw new Exception("O CPF fornecido é inválido.");
@@ -29,7 +29,7 @@ namespace FI.AtividadeEntrevista.BLL
             else
             {
                 return cli.Incluir(cliente);
-            }            
+            }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace FI.AtividadeEntrevista.BLL
             return cli.VerificarExistencia(CPF);
         }
 
-         /// <summary>
+        /// <summary>
         /// Verifica se o CPF é válido
         /// </summary>
         /// <param name="cpf">CPF a ser validado</param>

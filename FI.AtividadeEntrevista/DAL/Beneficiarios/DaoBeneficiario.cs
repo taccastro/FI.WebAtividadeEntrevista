@@ -14,7 +14,7 @@ namespace WebAtividadeEntrevista.DAO
             List<SqlParameter> list = new List<SqlParameter>();
             list.Add(new SqlParameter("@Nome", beneficiario.Nome));
             list.Add(new SqlParameter("@CPF", beneficiario.CPF));
-            list.Add(new SqlParameter("@IDCLIENTE", beneficiario.IDCLIENTE));
+            list.Add(new SqlParameter("@CLIENTEID", beneficiario.IDCLIENTE));
             DataSet dataSet = Consultar("FI_SP_IncBeneficiario", list);
             long result = 0L;
             if (dataSet.Tables[0].Rows.Count > 0)
@@ -42,16 +42,21 @@ namespace WebAtividadeEntrevista.DAO
             return dataSet.Tables[0].Rows.Count > 0;
         }
 
-        internal List<Beneficiario> Pesquisa(int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
+        internal List<Beneficiario> Pesquisa(int idCliente, int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
         {
-            List<SqlParameter> list = new List<SqlParameter>();
-            list.Add(new SqlParameter("@iniciarEm", iniciarEm));
-            list.Add(new SqlParameter("@quantidade", quantidade));
-            list.Add(new SqlParameter("@campoOrdenacao", campoOrdenacao));
-            list.Add(new SqlParameter("@crescente", crescente));
+            List<SqlParameter> list = new List<SqlParameter>
+            {
+                new SqlParameter("@idCliente", idCliente),
+                new SqlParameter("@iniciarEm", iniciarEm),
+                new SqlParameter("@quantidade", quantidade),
+                new SqlParameter("@campoOrdenacao", campoOrdenacao),
+                new SqlParameter("@crescente", crescente)
+            };
+
             DataSet dataSet = Consultar("FI_SP_PesqBeneficiario", list);
             List<Beneficiario> result = Converter(dataSet);
             int result2 = 0;
+
             if (dataSet.Tables.Count > 1 && dataSet.Tables[1].Rows.Count > 0)
             {
                 int.TryParse(dataSet.Tables[1].Rows[0][0].ToString(), out result2);
@@ -74,7 +79,6 @@ namespace WebAtividadeEntrevista.DAO
             List<SqlParameter> list = new List<SqlParameter>();
             list.Add(new SqlParameter("@Nome", beneficiario.Nome));
             list.Add(new SqlParameter("@CPF", beneficiario.CPF));
-            list.Add(new SqlParameter("@IdCliente", beneficiario.IDCLIENTE));
             list.Add(new SqlParameter("@ID", beneficiario.Id));
             Executar("FI_SP_AltBeneficiario", list);
         }

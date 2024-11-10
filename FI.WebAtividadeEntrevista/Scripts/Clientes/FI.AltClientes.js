@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     if (obj) {
         $('#formCadastro #IdCliente').val(obj.Id);
@@ -15,6 +14,7 @@ $(document).ready(function () {
         $('#formCadastro #Telefone').val(obj.Telefone);
     }
 
+    // Submit form for Cliente Alterar
     $('#formCadastro').submit(function (e) {
         e.preventDefault();
 
@@ -50,8 +50,9 @@ $(document).ready(function () {
         });
     });
 
+    // Open modal and include Beneficiario
     $('#openModalBtn').on('click', function () {
-        var clienteId = $('#ClienteId').val();
+        var clienteId = obj.Id; // Certifique-se que obj.Id existe e tem o valor correto.
         $('#ClienteIdModal').val(clienteId);
         $('#modalBeneficiario').modal('show');
         $('#NomeBeneficiario').val('');
@@ -60,40 +61,56 @@ $(document).ready(function () {
         $('#incluirLink').off('click').on('click', function (event) {
             event.preventDefault();
 
-            var clienteId = $('#ClienteIdModal').val();
+            var clienteId = $('#ClienteIdModal').val();  // Garantir que clienteId está correto
             var nomeBeneficiario = $('#NomeBeneficiario').val();
             var cpfBeneficiario = $('#CPFBeneficiario').val();
+
+            if (!clienteId || !nomeBeneficiario || !cpfBeneficiario) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
 
             $.ajax({
                 type: 'POST',
                 url: '/Beneficiario/Incluir',
-                data: {
+                contentType: 'application/json',
+                data: JSON.stringify({
                     ClienteId: clienteId,
                     Nome: nomeBeneficiario,
                     CPF: cpfBeneficiario
-                },
+                }),
                 success: function (response) {
                     if (response.success) {
                         $('#modalBeneficiario').modal('hide');
-                        ModalDialog(response.message, "SUCESSO!");
-                        preencherTabela(response.beneficiarios);
+                    
+                        
+                        if (response.beneficiarios) {
+                            preencherTabela(response.beneficiarios);
+                        }
                     } else {
-                        // Exibe mensagem de erro
                         alert(response.message);
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert('Ocorreu um erro ao incluir o beneficiário. Tente novamente.');
+                    // Trata os erros do servidor com base no código de status
+                    if (xhr.status === 400) {
+                        alert("Erro: " + xhr.responseText);
+                    } else if (xhr.status === 500) {
+                        alert("Erro interno: " + xhr.responseText);
+                    } else {
+                        alert("Erro desconhecido: " + status);
+                    }
                 }
             });
         });
 
-
+        // Carregar lista de Beneficiarios
         $.ajax({
             url: '/Beneficiario/BeneficiarioList',
             type: 'POST',
             dataType: 'json',
             data: {
+                idCliente: clienteId,
                 jtStartIndex: 0,
                 jtPageSize: 10,
                 jtSorting: 'Nome ASC'
@@ -103,17 +120,18 @@ $(document).ready(function () {
                     $('#tabelaCorpo').empty();
                     response.Records.forEach(function (record) {
                         $('#tabelaCorpo').append(`
-                        <tr>
-                            <td>${record.CPF}</td>
-                            <td>${record.Nome}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm alterar-btn" style="margin-right: 5px;" data-id="${record.Id}">Alterar</button>
-                                <button class="btn btn-primary btn-sm excluir-btn" data-id="${record.Id}">Excluir</button>
-                            </td>
-                        </tr>
-                    `);
+                            <tr>
+                                <td>${record.CPF}</td>
+                                <td>${record.Nome}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm alterar-btn" style="margin-right: 5px;" data-id="${record.Id}">Alterar</button>
+                                    <button class="btn btn-primary btn-sm excluir-btn" data-id="${record.Id}">Excluir</button>
+                                </td>
+                            </tr>
+                        `);
                     });
 
+                    // Event handlers for Alterar and Excluir
                     $('.alterar-btn').on('click', function () {
                         var clienteId = $(this).data('id');
                         window.location.href = '/Beneficiario/Alterar/' + clienteId;
@@ -121,20 +139,17 @@ $(document).ready(function () {
 
                     $('.excluir-btn').on('click', function () {
                         var clienteId = $(this).data('id');
-                        if (confirm("Tem certeza que deseja excluir este Beneficiãrio?")) {
+                        if (confirm("Tem certeza que deseja excluir este Beneficiário?")) {
                             $.ajax({
                                 url: '/Beneficiario/Excluir/' + clienteId,
                                 type: 'DELETE',
                                 success: function (response) {
                                     if (response.success) {
-                                        ModalDialog("Beneficiário excluído com sucesso.", "SUCESSO!")
-                                        $('#openModalBtn').click();
-                                    } else {
-                                        ModalDialog("Ocorreu um erro", "ERRO!");
+                                        location.reload(); // Atualiza a página após a exclusão
                                     }
                                 },
-                                error: function (error) {
-                                    ModalDialog("Ocorreu um erro", error.responseText);
+                                error: function () {
+                                    location.reload(); // Atualiza a página em caso de erro
                                 }
                             });
                         }
@@ -169,30 +184,4 @@ $(document).ready(function () {
             $('#ClienteIdModal').val(clienteId);
         });
     });
-
-
-})
-
-function ModalDialog(titulo, texto) {
-    var random = Math.random().toString().replace('.', '');
-    var texto = '<div id="' + random + '" class="modal fade">                                                               ' +
-        '        <div class="modal-dialog">                                                                                 ' +
-        '            <div class="modal-content">                                                                            ' +
-        '                <div class="modal-header">                                                                         ' +
-        '                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>         ' +
-        '                    <h4 class="modal-title">' + titulo + '</h4>                                                    ' +
-        '                </div>                                                                                             ' +
-        '                <div class="modal-body">                                                                           ' +
-        '                    <p>' + texto + '</p>                                                                           ' +
-        '                </div>                                                                                             ' +
-        '                <div class="modal-footer">                                                                         ' +
-        '                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>             ' +
-        '                                                                                                                   ' +
-        '                </div>                                                                                             ' +
-        '            </div><!-- /.modal-content -->                                                                         ' +
-        '  </div><!-- /.modal-dialog -->                                                                                    ' +
-        '</div> <!-- /.modal -->                                                                                        ';
-
-    $('body').append(texto);
-    $('#' + random).modal('show');
-}
+});

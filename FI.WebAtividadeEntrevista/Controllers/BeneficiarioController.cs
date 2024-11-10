@@ -25,21 +25,20 @@ namespace WebAtividadeEntrevista.Controllers
         {
             BoBeneficiario bo = new BoBeneficiario();
 
-            // Verificação de CPF inválido
+
             if (!bo.ValidarCPF(model.CPF))
             {
                 Response.StatusCode = 400;
                 return Json("CPF inválido.");
             }
 
-            // Verifica se o CPF já está cadastrado para o mesmo cliente
+
             if (bo.VerificarExistencia(model.CPF))
             {
                 Response.StatusCode = 400;
                 return Json("Já existe um beneficiário com esse CPF para o mesmo cliente.");
             }
 
-            // Caso tudo esteja correto, inclui o beneficiário
             try
             {
                 model.Id = bo.Incluir(new Beneficiario()
@@ -110,25 +109,26 @@ namespace WebAtividadeEntrevista.Controllers
         }
 
         [HttpPost]
-        public JsonResult BeneficiarioList(int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        public JsonResult BeneficiarioList(int idCliente, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
         {
             try
             {
                 int qtd = 0;
                 string campo = string.Empty;
                 string crescente = string.Empty;
-                string[] array = jtSorting.Split(' ');
+                string[] array = jtSorting?.Split(' ');
 
-                if (array.Length > 0)
+                if (array != null && array.Length > 0)
                     campo = array[0];
 
-                if (array.Length > 1)
+                if (array != null && array.Length > 1)
                     crescente = array[1];
 
+                // Passa o idCliente para o método Pesquisa
                 List<Beneficiario> beneficiarios = new BoBeneficiario().Pesquisa(
-                    jtStartIndex, jtPageSize, campo, crescente.Equals("ASC", StringComparison.InvariantCultureIgnoreCase), out qtd);
+                    idCliente, jtStartIndex, jtPageSize, campo, crescente.Equals("ASC", StringComparison.InvariantCultureIgnoreCase), out qtd);
 
-                //Return result to jTable
+                // Retorna os beneficiários específicos do cliente
                 return Json(new { Result = "OK", Records = beneficiarios, TotalRecordCount = qtd });
             }
             catch (Exception ex)
@@ -143,13 +143,13 @@ namespace WebAtividadeEntrevista.Controllers
             try
             {
                 BoBeneficiario beneficiario = new BoBeneficiario();
-                beneficiario.Excluir(id);
+                beneficiario.Excluir(id); // Executa a exclusão sem lançar exceções de sucesso
 
-                return Json(new { success = true, message = "Cliente excluído com sucesso." },
-                    JsonRequestBehavior.AllowGet);
+                return Json("Beneficiário excluído com sucesso.");
             }
             catch (Exception ex)
             {
+                // Captura qualquer erro e retorna a mensagem
                 return Json(new { success = false, message = ex.Message },
                     JsonRequestBehavior.AllowGet);
             }

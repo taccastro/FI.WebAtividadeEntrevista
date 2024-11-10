@@ -45,7 +45,7 @@ namespace FI.AtividadeEntrevista.DAL
                 conexao.Close();
             }
         }
-              
+
 
         internal DataSet Consultar(string NomeProcedure, List<SqlParameter> parametros)
         {

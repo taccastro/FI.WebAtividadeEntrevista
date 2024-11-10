@@ -82,6 +82,7 @@
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_ConsBeneficiario.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_DelBeneficiario.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_IncBeneficiario.sql" />
+    <Content Include="DAL\Beneficiarios\Procedures\FI_SP_VerificaBeneficiario.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_PesqBeneficiario.sql" />
   </ItemGroup>
   <ItemGroup>
